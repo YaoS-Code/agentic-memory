@@ -1,0 +1,38 @@
+# Agent Configuration
+
+## Skills Index
+
+| Skill | Purpose |
+|-------|---------|
+| memory-system | Memory API reference and usage |
+| self-improvement | Self-learning and optimization |
+| task-queue | Async background task execution |
+| web-search | Web search integration |
+
+## Rules
+
+### Memory
+
+Unified memory — PostgreSQL + pgvector + bge-m3. One entry point for all searches.
+
+**Search: always use `memory_search` first**
+- Default memory search tool, no need for user to specify
+- Searches workspace files + conversation memories simultaneously, hybrid ranked
+- User asks about "what did we do before" / "any record of X" / "last time" → use memory_search
+
+**Write: use `curl`** (only for these operations)
+```bash
+# Store structured facts
+curl -s -X POST http://localhost:18800/facts -H "Content-Type: application/json" -d '{"domain":"...", "key":"...", "value":...}'
+
+# Store conversation memory
+curl -s -X POST http://localhost:18800/store -H "Content-Type: application/json" -d '{"content":"...", "category":"decision"}'
+
+# Context recall (when you need large context)
+curl -s http://localhost:18800/recall -H "Content-Type: application/json" -d '{"context":"topic"}'
+
+# Force workspace re-index (after modifying workspace files)
+curl -s -X POST http://localhost:18800/workspace/sync -d '{"force":true}'
+```
+
+**Simple rule: Search → memory_search, Write → curl**

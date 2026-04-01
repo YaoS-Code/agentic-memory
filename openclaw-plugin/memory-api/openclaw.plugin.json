@@ -1,0 +1,20 @@
+{
+  "id": "memory-api",
+  "name": "Memory API Plugin",
+  "description": "Memory plugin backed by the OpenClaw Memory Service HTTP API (localhost:18800). Replaces the built-in memory-core with vector search via PostgreSQL + pgvector + bge-m3.",
+  "kind": "memory",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "apiUrl": {
+        "type": "string",
+        "default": "http://localhost:18800"
+      },
+      "maxResults": {
+        "type": "integer",
+        "default": 8
+      }
+    }
+  }
+}

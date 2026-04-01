@@ -1,0 +1,58 @@
+{
+  "// INSTRUCTIONS": "Copy this to ~/.openclaw/openclaw.json and fill in your values",
+
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "anthropic/claude-sonnet-4-6",
+        "fallbacks": ["anthropic/claude-haiku-4-5"]
+      },
+      "workspace": "~/.openclaw/workspace",
+      "memorySearch": {
+        "// NOTE": "Point to your memory service /v1/embeddings endpoint",
+        "provider": "openai",
+        "model": "bge-m3",
+        "remote": {
+          "baseUrl": "http://localhost:18800/v1",
+          "apiKey": "no-key-needed"
+        }
+      },
+      "compaction": {
+        "mode": "safeguard"
+      }
+    }
+  },
+
+  "plugins": {
+    "allow": ["memory-api"],
+    "load": {
+      "paths": ["~/.openclaw/plugins/memory-api"]
+    },
+    "slots": {
+      "memory": "memory-api"
+    },
+    "entries": {
+      "memory-api": {
+        "enabled": true,
+        "config": {
+          "apiUrl": "http://localhost:18800",
+          "maxResults": 8
+        }
+      }
+    }
+  },
+
+  "tools": {
+    "exec": {
+      "security": "allowlist",
+      "ask": "on-miss",
+      "safeBins": [
+        "git", "curl", "node", "npm", "npx",
+        "python3", "pip", "docker",
+        "ls", "cat", "head", "tail", "grep", "find", "wc",
+        "mkdir", "cp", "mv", "touch", "chmod"
+      ],
+      "timeoutSec": 300
+    }
+  }
+}
