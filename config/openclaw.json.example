@@ -8,19 +8,34 @@
         "fallbacks": ["anthropic/claude-haiku-4-5"]
       },
       "workspace": "~/.openclaw/workspace",
-      "memorySearch": {
-        "// NOTE": "Point to your memory service /v1/embeddings endpoint",
-        "provider": "openai",
-        "model": "bge-m3",
-        "remote": {
-          "baseUrl": "http://localhost:18800/v1",
-          "apiKey": "no-key-needed"
-        }
-      },
       "compaction": {
         "mode": "safeguard"
+      },
+      "sandbox": {
+        "mode": "off"
       }
-    }
+    },
+    "list": [{
+      "id": "main",
+      "tools": {
+        "profile": "coding",
+        "allow": [
+          "group:fs",
+          "group:runtime",
+          "group:web",
+          "group:memory",
+          "group:sessions",
+          "group:automation"
+        ],
+        "exec": {
+          "security": "full",
+          "ask": "off",
+          "host": "gateway",
+          "timeoutSec": 300,
+          "strictInlineEval": false
+        }
+      }
+    }]
   },
 
   "plugins": {
@@ -43,16 +58,18 @@
   },
 
   "tools": {
+    "profile": "coding",
+    "fs": {
+      "workspaceOnly": false
+    },
     "exec": {
-      "security": "allowlist",
-      "ask": "on-miss",
-      "safeBins": [
-        "git", "curl", "node", "npm", "npx",
-        "python3", "pip", "docker",
-        "ls", "cat", "head", "tail", "grep", "find", "wc",
-        "mkdir", "cp", "mv", "touch", "chmod"
-      ],
-      "timeoutSec": 300
+      "security": "full",
+      "ask": "off",
+      "host": "gateway",
+      "timeoutSec": 300,
+      "strictInlineEval": false
     }
-  }
+  },
+
+  "// IMPORTANT": "Do NOT use profile: 'full' — it has an empty allowlist and will disable exec/read/write/edit. Use 'coding' instead. See docs/UPGRADE-2026.3.28.md for details."
 }

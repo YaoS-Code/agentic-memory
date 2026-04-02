@@ -366,6 +366,26 @@ agentic-memory/
     └── ARCHITECTURE.md      # Detailed architecture documentation
 ```
 
+## Upgrading from OpenClaw 2026.3.13 → 2026.3.28+
+
+If your agent lost `exec`, `read`, `write`, or `edit` tools after upgrading OpenClaw, see **[docs/UPGRADE-2026.3.28.md](docs/UPGRADE-2026.3.28.md)** for the fix.
+
+**TL;DR**: The `tools.allow` field in `openclaw.json` acts as a whitelist. You must include `group:fs` and `group:runtime` for file and exec tools to work. Also, do NOT use `profile: "full"` — use `profile: "coding"` instead.
+
+## Changelog
+
+### 2026-04-02
+
+- **Fix**: Document OpenClaw 2026.3.28 `tools.allow` whitelist issue that disables exec/read/write
+- **Fix**: Document `profile: "full"` vs `profile: "coding"` gotcha (full = empty allowlist)
+- **Fix**: Update `openclaw.json.example` with correct tool group allowlist
+- **Docs**: Add `docs/UPGRADE-2026.3.28.md` — complete upgrade guide with exec fix, session cache clearing, and SQLite → PostgreSQL migration notes
+- **Fix**: Use `process.env.HOME` instead of hardcoded paths in plugin
+
+### 2026-03-21
+
+- Initial release: Agentic Memory — PostgreSQL + pgvector + bge-m3 memory system for AI agents
+
 ## License
 
 MIT
