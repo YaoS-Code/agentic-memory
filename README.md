@@ -374,17 +374,31 @@ If your agent lost `exec`, `read`, `write`, or `edit` tools after upgrading Open
 
 ## Changelog
 
-### 2026-04-02
+### 2026-04-02 — Full Native Deployment (No Docker)
 
+- **Docker → systemd migration**: All 5 Docker containers (PostgreSQL, Redis, MinIO, Flask API, Discord bot) migrated to native systemd services
+- PostgreSQL port: 5434 → 5432 (removed Docker port mapping overhead)
+- Redis port: 6380 → 6379
+- Released ~2GB of Docker image/volume storage
+- Memory service now runs as native uvicorn process
+- See [docs/SYSTEMD-MIGRATION.md](docs/SYSTEMD-MIGRATION.md) for the full migration guide
+
+### 2026-04-02 — OpenClaw 4.1 Upgrade
+
+- Upgraded from 3.28 → 3.31 → 4.1
+- Custom PostgreSQL task store patch (`task-store-pg.mjs`) — replaces SQLite task registry
+- Fixed tool allowlist: added `group:fs` and `group:runtime` to `tools.allow`
+- Fixed profile: use `"coding"` not `"full"` (full = empty object in source)
 - **Fix**: Document OpenClaw 2026.3.28 `tools.allow` whitelist issue that disables exec/read/write
 - **Fix**: Document `profile: "full"` vs `profile: "coding"` gotcha (full = empty allowlist)
 - **Fix**: Update `openclaw.json.example` with correct tool group allowlist
 - **Docs**: Add `docs/UPGRADE-2026.3.28.md` — complete upgrade guide with exec fix, session cache clearing, and SQLite → PostgreSQL migration notes
 - **Fix**: Use `process.env.HOME` instead of hardcoded paths in plugin
 
-### 2026-03-21
+### 2026-03-21 — v1.0 Initial Release
 
-- Initial release: Agentic Memory — PostgreSQL + pgvector + bge-m3 memory system for AI agents
+- First open-source release: PostgreSQL + pgvector + bge-m3 memory system
+- Features: vector search, structured facts, workspace indexing, auto-extraction, time decay
 
 ## License
 
